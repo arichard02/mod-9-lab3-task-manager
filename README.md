@@ -1,73 +1,19 @@
-# React + TypeScript + Vite
+*********************
+Reflection Questions
+*********************
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+How did you ensure unique keys for your list items?
 
-Currently, two official plugins are available:
+For my list items, I used the id property from each task as the key when mapping over the tasks array. Since each task has a unique id, it made the most sense to use that instead of something like the array index.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+What considerations did you make when implementing the filtering functionality?
 
-## React Compiler
+When I implemented filtering, I wanted to make sure I wasn’t changing the original tasks array. Instead of creating a separate state for filtered tasks, I used the .filter() method directly when rendering.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+How did you handle state updates for task status changes?
 
-## Expanding the ESLint configuration
+I managed all task state in the App component using useState, since that’s the top-level component. When a task’s status changes, I pass a function down to TaskItem that sends the task ID and new status back up. Then I used .map() to update the correct task without changing the original array.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+What challenges did you face when implementing conditional rendering?
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+One challenge I faced was figuring out how to apply different styles based on the task status without cluttering the JSX. To keep things organized, I created a helper function that returns the appropriate class name instead of putting multiple conditional checks directly inside the JSX.

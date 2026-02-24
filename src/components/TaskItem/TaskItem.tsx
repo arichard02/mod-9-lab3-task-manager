@@ -1,44 +1,43 @@
-import type { Task, TaskStatus } from "../../types";
-import { useState } from "react";
-
-// export type TaskStatus = "pending" | "in-progress" | "completed";
+import type { TaskItemProps, TaskStatus } from "../../types";
 
 export default function TaskItem({
+  task,
+  onStatusChange,
+  onDelete,
+}: TaskItemProps) {
 
-  title,
-  description,
-  status,
-  priority,
-  dueDate,
-}: Task) {
+  function handleStatusChange() {
+    const nextStatus: TaskStatus =
+      task.status === "pending"
+        ? "in-progress"
+        : task.status === "in-progress"
+        ? "completed"
+        : "pending";
 
- // create editable state from the incoming status
-const [currentStatus, setCurrentStatus] = useState<TaskStatus>(status);
-
-  function markAsComplete() {
-    setCurrentStatus("completed");
+    onStatusChange(task.id, nextStatus);
   }
 
   function getStyle() {
-    if(currentStatus === "completed"){
-      return "task-completed"; 
-    } 
-    else if (currentStatus === "in-progress") {
-      return "task-in-progress"
-    }
-    else {
-      return "task"
-    } 
+    if (task.status === "completed") return "task-completed";
+    if (task.status === "in-progress") return "task-in-progress";
+    return "task";
   }
 
   return (
-    <div className={getStyle()} >
-      <p>{title}</p>
-      <p>{description}</p>
-      <p>{currentStatus}</p>
-      <p>{priority}</p>
-      <p>{dueDate}</p>
-      <button onClick={markAsComplete}>Mark As Complete</button>
+    <div className={getStyle()}>
+      <h3>{task.title}</h3>
+      <p>{task.description}</p>
+      <p>Status: {task.status}</p>
+      <p>Priority: {task.priority}</p>
+      <p>Due: {task.dueDate}</p>
+
+      <button onClick={handleStatusChange}>
+        Change Status
+      </button>
+
+      <button onClick={() => onDelete(task.id)}>
+        Delete
+      </button>
     </div>
   );
 }

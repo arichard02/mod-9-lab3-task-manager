@@ -36,13 +36,17 @@ function App() {
   function handleStatusChange(taskId: string, newStatus: TaskStatus) {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === taskId ? { ...task, status: newStatus } : task,
-      ),
+        task.id === taskId
+          ? { ...task, status: newStatus }
+          : task
+      )
     );
   }
 
   function handleDelete(taskId: string) {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    setTasks((prevTasks) =>
+      prevTasks.filter((task) => task.id !== taskId)
+    );
   }
 
   return (
